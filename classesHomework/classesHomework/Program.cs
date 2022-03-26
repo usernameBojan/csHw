@@ -12,7 +12,6 @@ namespace classesHomework
             Driver Hamilton = new Driver("Lewis Hamilton", 5, 0);
             Driver Bottas = new Driver("Valtteri Bottas", 4, 0);
             Driver Leclerc = new Driver("Charles Leclerc", 3, 0);
-
             Car Mercedes = new Car("Mercedes", Default, 300, 0);
             Car Ferrari = new Car("Ferrari", Default, 320, 0);
             Car RedBull = new Car("RedBull Powertrains", Default, 280, 0);
@@ -34,117 +33,45 @@ namespace classesHomework
                     Console.WriteLine($"{secondCar.Model} won the race. It was going {secondCar.Speed} and was driven by {secondCar.Driver.Name}");
                 }
                 else Console.WriteLine("We have a draw!");
-                
             }
 
             void ChooseOptions()
             {
+                Car[] cars = { Mercedes, Ferrari, RedBull, Renault };
+                Driver[] drivers = { Verstappen, Hamilton, Bottas, Leclerc };
                 string[] carOpts = { $"1.{Mercedes.Model}", $"2.{Ferrari.Model}", $"3.{RedBull.Model}", $"4.{Renault.Model}" };
                 string[] driverOpts = { $"1.{Verstappen.Name}", $"2.{Hamilton.Name}", $"3.{Bottas.Name}", $"4.{Leclerc.Name}" };
-
                 Car car1 = default;
                 Car car2 = default;
 
-                void chooseOpts(string selectValue, string switchValue, int secondChoice)
-                {                    
-                    if (switchValue == "Car" && secondChoice==0)
+                void chooseOpts(string selectValue, string choiceValue, int secondChoice)
+                {
+                    for(int i=0; i<4; i++)
                     {
-                        switch (selectValue)
+                        if (selectValue == carOpts[i].Substring(0, 1) && choiceValue == "Car" && secondChoice == 0)
                         {
-                            case "1":
-                                car1 = Mercedes;
-                                car1.Id = 1;
-                                break;
-                            case "2":
-                                car1 = Ferrari;
-                                car1.Id = 2;
-                                break;
-                            case "3":
-                                car1 = RedBull;
-                                car1.Id = 3;
-                                break;
-                            case "4":
-                                car1 = Renault;
-                                car1.Id = 4;
-                                break;
-                            default:
-                                Console.WriteLine("Error. No such car. Please select one of the offered numbers");
-                                break;
+                            car1 = cars[i];
+                            car1.Id = i+1;
                         }
-                    }
-                    else if (switchValue == "Car" && secondChoice==2)
-                    {
-                        switch (selectValue)
+                        if (selectValue == driverOpts[i].Substring(0, 1) && choiceValue == "Driver" && secondChoice == 0)
                         {
-                            case "1":
-                                car2 = Mercedes;
-                                car2.Id = 1;
-                                break;
-                            case "2":
-                                car2 = Ferrari;
-                                car2.Id = 2;
-                                break;
-                            case "3":
-                                car2 = RedBull;
-                                car2.Id = 3;
-                                break;
-                            case "4":
-                                car2 = Renault;
-                                car2.Id = 4;
-                                break;
-                            default:
-                                Console.WriteLine("Error. No such car. Please select one of the offered numbers");
-                                break;
+                            car1.Driver = drivers[i];
+                            car1.Driver.Id = i+1;
                         }
-                    }
-                    else if (switchValue=="Driver" && secondChoice == 0)
-                    {
-                        switch (selectValue)
+                        if (selectValue == carOpts[i].Substring(0, 1) && choiceValue == "Car" && secondChoice == 2)
                         {
-                            case "1":
-                                car1.Driver = Verstappen;
-                                car1.Driver.Id = 1;
-                                break;
-                            case "2":
-                                car1.Driver = Hamilton;
-                                car1.Driver.Id = 2;
-                                break;
-                            case "3":
-                                car1.Driver = Bottas;
-                                car1.Driver.Id = 3;
-                                break;
-                            case "4":
-                                car1.Driver = Leclerc;
-                                car1.Driver.Id = 4;
-                                break;
-                            default:
-                                Console.WriteLine("Error. No such driver. Please select one of the offered numbers");
-                                break;
-                        }
-                    }
-                    else if (switchValue == "Driver" && secondChoice==2)
-                    {
-                        switch (selectValue)
+                            car2 = cars[i];
+                            car2.Id = i+1;
+                        }                        
+                        if (selectValue == driverOpts[i].Substring(0, 1) && choiceValue == "Driver" && secondChoice == 2)
                         {
-                            case "1":
-                                car2.Driver = Verstappen;
-                                car2.Driver.Id = 1;
-                                break;
-                            case "2":
-                                car2.Driver = Hamilton;
-                                car2.Driver.Id = 2;
-                                break;
-                            case "3":
-                                car2.Driver = Bottas;
-                                car2.Driver.Id = 3;
-                                break;
-                            case "4":
-                                car2.Driver = Leclerc;
-                                car2.Driver.Id = 4;
-                                break;
-                            default:
-                                Console.WriteLine("Error. No such driver. Please select one of the offered numbers");
-                                break;
+                            car2.Driver = drivers[i];
+                            car2.Driver.Id = i+1;
+                        } 
+                        else if (selectValue!="1" && selectValue != "2" && selectValue != "3" && selectValue != "4")
+                        {
+                            Console.WriteLine("Error. No such driver. Please select one of the offered numbers");
+                            ChooseOptions();
                         }
                     }
                 }
@@ -222,12 +149,15 @@ namespace classesHomework
                 else chooseOpts(selectSecondDriver, "Driver", 2);
 
                 RaceCars(car1, car2);
-
                 Console.WriteLine("Would you like another race? type Y/N.");
                 string raceAgainAnswer = Console.ReadLine().ToLower();
                 if (raceAgainAnswer == "y")
                 {
                     ChooseOptions();
+                }
+                else if (raceAgainAnswer != "y")
+                {
+                    Environment.Exit(0);
                 }
             }   
         }
